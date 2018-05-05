@@ -28,4 +28,5 @@ func format(t time.Time) {
 	fmt.Println("\"timezh\"还可以：")
 	fmt.Println("  - timezh.Format(特性):", timezh.T(t).Format("2006年01月02日(一月) 下午3:04:05 星期一(周一)"))
 	fmt.Println("  - timezh.Format(特性):", timezh.T(t).Format("2006年01月02日(January, 一月) 下午3:04:05PM 星期一(Mon, 周一)"))
+	fmt.Println("  - timezh.Format(特性):", timezh.T(t).FormatMix("2006年01月02日(January, 一月) 下午3:04:05PM 星期一(Mon, 周一)"))
 }

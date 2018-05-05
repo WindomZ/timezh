@@ -4,6 +4,7 @@ import "bytes"
 
 type format struct {
 	layout     string
+	mixed      bool
 	day        uint64
 	dayPoint   uint64
 	month      uint64
@@ -45,6 +46,13 @@ func (f *format) reset() {
 // about the formats and the definition of the reference time, see the
 // documentation for ANSIC and the other constants defined by this package.
 func (t Time) Format(layout string) string {
+	t.f.mixed = false
+	return t.lookup(t.Time.Format(t.formatLayout(layout)))
+}
+
+// FormatMix the difference with Format is that it can be mixed in English and Chinese.
+func (t Time) FormatMix(layout string) string {
+	t.f.mixed = true
 	return t.lookup(t.Time.Format(t.formatLayout(layout)))
 }
 
@@ -59,72 +67,89 @@ func FormatLayout(layout string) string {
 
 func (t *Time) formatLayout(layout string) string {
 	t.f.init(layout)
-	j := 0
+	j, l := 0, len(layout)
 	for i, r := range layout {
 		if i < j {
 			continue
 		}
 		switch r {
 		case 'M':
-			if len(layout) >= i+6 && layout[i:i+6] == "Monday" {
+			if l >= i+6 && layout[i:i+6] == "Monday" {
 				j = i + 6
-				t.f.day <<= 1
-				t.f.dayPoint <<= 1
+				if t.f.mixed {
+					t.f.day <<= 1
+					t.f.dayPoint <<= 1
+				}
 				t.f.buf.WriteString("Monday")
-			} else if len(layout) >= i+3 && layout[i:i+3] == "Mon" {
+			} else if l >= i+3 && layout[i:i+3] == "Mon" {
 				j = i + 3
-				t.f.day <<= 1
-				t.f.dayPoint <<= 1
+				if t.f.mixed {
+					t.f.day <<= 1
+					t.f.dayPoint <<= 1
+				}
 				t.f.buf.WriteString("Mon")
 			}
 		case 'J':
-			if len(layout) >= i+7 && layout[i:i+7] == "January" {
+			if l >= i+7 && layout[i:i+7] == "January" {
 				j = i + 7
-				t.f.month <<= 1
-				t.f.monthPoint <<= 1
+				if t.f.mixed {
+					t.f.month <<= 1
+					t.f.monthPoint <<= 1
+				}
 				t.f.buf.WriteString("January")
-			} else if len(layout) >= i+3 && layout[i:i+3] == "Jan" {
+			} else if l >= i+3 && layout[i:i+3] == "Jan" {
 				j = i + 3
-				t.f.month <<= 1
-				t.f.monthPoint <<= 1
+				if t.f.mixed {
+					t.f.month <<= 1
+					t.f.monthPoint <<= 1
+				}
 				t.f.buf.WriteString("Jan")
 			}
 		case 'P', 'p':
-			if len(layout) >= i+2 {
-				s := layout[i : i+2]
-				if s == "PM" || s == "pm" {
+			if l >= i+2 {
+				if layout[i:i+2] == "PM" || layout[i:i+2] == "pm" {
 					j = i + 2
-					t.f.pm <<= 1
-					t.f.pmPoint <<= 1
-					t.f.buf.WriteString(s)
+					if t.f.mixed {
+						t.f.pm <<= 1
+						t.f.pmPoint <<= 1
+					}
+					t.f.buf.WriteString("PM")
 				}
 			}
 		case '星':
-			if len(layout) >= i+9 && layout[i:i+9] == "星期一" {
+			if l >= i+9 && layout[i:i+9] == "星期一" {
 				j = i + 9
-				t.f.day = (t.f.day + 1) << 1
-				t.f.dayPoint <<= 1
+				if t.f.mixed {
+					t.f.day = (t.f.day + 1) << 1
+					t.f.dayPoint <<= 1
+				}
 				t.f.buf.WriteString("Monday")
 			}
 		case '周':
-			if len(layout) >= i+6 && layout[i:i+6] == "周一" {
+			if l >= i+6 && layout[i:i+6] == "周一" {
 				j = i + 6
-				t.f.day = (t.f.day + 1) << 1
-				t.f.dayPoint <<= 1
+				if t.f.mixed {
+					t.f.day = (t.f.day + 1) << 1
+					t.f.dayPoint <<= 1
+				}
 				t.f.buf.WriteString("Mon")
 			}
 		case '一':
-			if len(layout) >= i+6 && layout[i:i+6] == "一月" {
+			if l >= i+6 && layout[i:i+6] == "一月" {
 				j = i + 6
-				t.f.month = (t.f.month + 1) << 1
-				t.f.monthPoint <<= 1
+				if t.f.mixed {
+					t.f.month = (t.f.month + 1) << 1
+					t.f.monthPoint <<= 1
+				}
 				t.f.buf.WriteString("Jan")
 			}
 		case '下':
-			if len(layout) >= i+6 && layout[i:i+6] == "下午" {
+			if l >= i+6 && layout[i:i+6] == "下午" {
 				j = i + 6
-				t.f.pm = (t.f.pm + 1) << 1
-				t.f.pmPoint <<= 1
+				if t.f.mixed {
+					t.f.pm = (t.f.pm + 1) << 1
+					t.f.pmPoint <<= 1
+				}
 				t.f.buf.WriteString("PM")
 			}
 		}
