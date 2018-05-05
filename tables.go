@@ -50,6 +50,7 @@ var longMonthNames = [...]string{
 	"December",
 }
 
+// A Weekday specifies a day of the week (Sunday = 0, ...).
 const (
 	Sunday = iota
 	Monday
@@ -80,6 +81,7 @@ var shortDayMap = [...]string{
 	"周六",
 }
 
+// A Month specifies a month of the year (January = 0, ...).
 const (
 	January = iota
 	February
@@ -112,6 +114,7 @@ var shortMonthMap = [...]string{
 
 var longMonthMap = shortMonthMap
 
+// A Day specifies a half of the Day (AM = 0, PM = 0).
 const (
 	AM = iota
 	PM
