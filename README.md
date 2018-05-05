@@ -9,6 +9,11 @@
 
 扩展原生`time`快速实现时间格式中文化
 
+## Install
+```bash
+go get github.com/WindomZ/timezh
+```
+
 ## Features
 |格式用途|原生`time`|引入`timezh`|
 |:-----:|:-----:|:-----:|
@@ -67,7 +72,7 @@ timezh.FormatChinese("2009年01月03日(January) 6:15:05PM 星期六(Sat)")
   - [ ] Parse(string, string) (Time, error)
 
 ## Contributing
-欢迎你提交PR，在[issues page](https://github.com/WindomZ/timezh/issues)汇报Bugs、提出新想法等，
+欢迎你Fork，提交PR，在[issues page](https://github.com/WindomZ/timezh/issues)汇报Bugs、提出新想法等，
 我很乐意能一起参与。
 
 如果你喜欢这个项目，可以点下 :star: 予以支持，谢谢！
