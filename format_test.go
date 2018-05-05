@@ -9,19 +9,23 @@ import (
 
 func TestTime_Format(t *testing.T) {
 	layout1 := "January, Jan, 2006-01-02, 02-Jan-06, Monday, Mon, 15:04:05PM -0700, 15:04:05Z07:00PM MST"
-	assert.Equal(t, time.Now().Format(layout1), Now().Format(layout1))
+	assert.NotEqual(t, time.Now().Format(layout1), Now().Format(layout1))
+	assert.NotEqual(t, Now().Format(layout1), Now().FormatMix(layout1))
 
 	layout2 := "January, 一月, Jan, 2006-01-02, 02-一月-06, Monday, 星期一, Mon, 周一, 15:04:05PM -0700, 15:04:05Z07:00下午 MST"
 	assert.NotEqual(t, layout2, FormatLayout(layout2))
 	assert.NotEqual(t, time.Now().Format(layout2), Now().Format(layout2))
+	assert.NotEqual(t, Now().Format(layout2), Now().FormatMix(layout2))
 
 	layout3 := "January, 一月, Jan, 2006-01-02, 02-一月-06, Monday, 星期一, Mon, 周一, 15:04:05PM -0700, 15:04:05.999999999Z07:00下午 MST"
 	assert.NotEqual(t, layout3, FormatLayout(layout3))
 	assert.NotEqual(t, time.Now().Format(layout3), Now().Format(layout3))
+	assert.NotEqual(t, Now().Format(layout3), Now().FormatMix(layout3))
 
 	layout4 := "15:04:05PM party time"
 	assert.Equal(t, layout4, FormatLayout(layout4))
-	assert.Equal(t, time.Now().Format(layout4), Now().Format(layout4))
+	assert.NotEqual(t, time.Now().Format(layout4), Now().Format(layout4))
+	assert.NotEqual(t, Now().Format(layout4), Now().FormatMix(layout4))
 
 	layout5 := "all "
 	for month := range monthNames {
@@ -31,19 +35,18 @@ func TestTime_Format(t *testing.T) {
 		layout5 += day + " "
 	}
 	assert.Equal(t, layout5, FormatLayout(layout5))
-	assert.Equal(t, time.Now().Format(layout5), Now().Format(layout5))
+	assert.NotEqual(t, time.Now().Format(layout5), Now().Format(layout5))
+	assert.NotEqual(t, Now().Format(layout5), Now().FormatMix(layout5))
 
 	layout6 := "15:04:05PM 15:04:05pm 3:04:05PM 3:04:05pm"
-	assert.Equal(t, layout6, FormatLayout(layout6))
-	assert.Equal(t, time.Now().Format(layout6), Now().Format(layout6))
+	assert.NotEqual(t, layout6, FormatLayout(layout6))
+	assert.NotEqual(t, time.Now().Format(layout6), Now().Format(layout6))
+	assert.NotEqual(t, Now().Format(layout6), Now().FormatMix(layout6))
 
 	layout7 := "15:04:05PM 15:04:05pm 3:04:05PM 3:04:05pm 15:04:05下午 3:04:05下午"
 	assert.NotEqual(t, layout7, FormatLayout(layout7))
-	if time.Now().Hour() >= 12 {
-		assert.Equal(t, time.Now().Format(layout7), Now().Format(layout7))
-	} else {
-		assert.NotEqual(t, time.Now().Format(layout7), Now().Format(layout7))
-	}
+	assert.NotEqual(t, time.Now().Format(layout7), Now().Format(layout7))
+	assert.NotEqual(t, Now().Format(layout7), Now().FormatMix(layout7))
 }
 
 func TestFormatLayout(t *testing.T) {
