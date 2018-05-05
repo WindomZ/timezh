@@ -1,7 +1,7 @@
 package timezh
 
 func (t *Time) lookupDay(s string) bool {
-	if v, ok := dayNames[s]; ok {
+	if v, ok := dayFormat[s]; ok {
 		if t.f.mixed {
 			if t.f.day&t.f.dayPoint > 0 {
 				t.f.buf.WriteString(v)
@@ -18,7 +18,7 @@ func (t *Time) lookupDay(s string) bool {
 }
 
 func (t *Time) lookupMonth(s string) (ok bool) {
-	if v, ok := monthNames[s]; ok {
+	if v, ok := monthFormat[s]; ok {
 		if t.f.mixed {
 			if t.f.month&t.f.monthPoint > 0 {
 				t.f.buf.WriteString(v)
@@ -35,7 +35,7 @@ func (t *Time) lookupMonth(s string) (ok bool) {
 }
 
 func (t *Time) lookupPM(s string) (ok bool) {
-	if v, ok := pmNames[s]; ok {
+	if v, ok := pmFormat[s]; ok {
 		if t.f.mixed {
 			if t.f.pm&t.f.pmPoint > 0 {
 				t.f.buf.WriteString(v)

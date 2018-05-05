@@ -1,6 +1,6 @@
 package timezh
 
-var dayNames = map[string]string{
+var dayFormat = map[string]string{
 	"Sunday":    "星期日",
 	"Monday":    "星期一",
 	"Tuesday":   "星期二",
@@ -17,7 +17,7 @@ var dayNames = map[string]string{
 	"Sat":       "周六",
 }
 
-var monthNames = map[string]string{
+var monthFormat = map[string]string{
 	"Jan":       "一月",
 	"Feb":       "二月",
 	"Mar":       "三月",
@@ -43,7 +43,7 @@ var monthNames = map[string]string{
 	"December":  "十二月",
 }
 
-var pmNames = map[string]string{
+var pmFormat = map[string]string{
 	"PM": "下午",
 	"AM": "上午",
 	"pm": "下午",

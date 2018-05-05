@@ -8,6 +8,26 @@ import (
 )
 
 func TestTime_Format(t *testing.T) {
+	testTime, _ := time.Parse("2006-01-02 15:04:05", "2009-01-03 18:15:05")
+
+	assert.Equal(t, "2009-01-03(一月) 下午6:15:05 星期六(周六)",
+		T(testTime).Format("2006-01-02(January) PM3:04:05 Monday(Mon)"))
+	assert.Equal(t, "2009年01月03日(一月) 下午6:15:05 星期六(周六)",
+		T(testTime).Format("2006年01月02日(January) PM3:04:05 Monday(Mon)"))
+	assert.Equal(t, "2009年01月03日(一月) 下午6:15:05 星期六(周六)",
+		T(testTime).Format("2006年01月02日(一月) 下午3:04:05 星期一(周一)"))
+	assert.Equal(t, "2009年01月03日(一月, 一月) 下午6:15:05下午 星期六(周六, 周六)",
+		T(testTime).Format("2006年01月02日(January, 一月) 下午3:04:05PM 星期一(Mon, 周一)"))
+}
+
+func TestTime_FormatMix(t *testing.T) {
+	testTime, _ := time.Parse("2006-01-02 15:04:05", "2009-01-03 18:15:05")
+
+	assert.Equal(t, "2009年01月03日(January, 一月) 下午6:15:05PM 星期六(Sat, 周六)",
+		T(testTime).FormatMix("2006年01月02日(January, 一月) 下午3:04:05PM 星期一(Mon, 周一)"))
+}
+
+func TestTime_Format_All(t *testing.T) {
 	layout1 := "January, Jan, 2006-01-02, 02-Jan-06, Monday, Mon, 15:04:05PM -0700, 15:04:05Z07:00PM MST"
 	assert.NotEqual(t, time.Now().Format(layout1), Now().Format(layout1))
 	assert.NotEqual(t, Now().Format(layout1), Now().FormatMix(layout1))
@@ -28,10 +48,10 @@ func TestTime_Format(t *testing.T) {
 	assert.NotEqual(t, Now().Format(layout4), Now().FormatMix(layout4))
 
 	layout5 := "all "
-	for month := range monthNames {
+	for month := range monthFormat {
 		layout5 += month + " "
 	}
-	for day := range dayNames {
+	for day := range dayFormat {
 		layout5 += day + " "
 	}
 	assert.Equal(t, layout5, FormatLayout(layout5))
