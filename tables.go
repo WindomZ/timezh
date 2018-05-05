@@ -1,51 +1,125 @@
 package timezh
 
-var dayFormat = map[string]string{
-	"Sunday":    "星期日",
-	"Monday":    "星期一",
-	"Tuesday":   "星期二",
-	"Wednesday": "星期三",
-	"Thursday":  "星期四",
-	"Friday":    "星期五",
-	"Saturday":  "星期六",
-	"Sun":       "周日",
-	"Mon":       "周一",
-	"Tue":       "周二",
-	"Wed":       "周三",
-	"Thu":       "周四",
-	"Fri":       "周五",
-	"Sat":       "周六",
+var longDayNames = [...]string{
+	"Sunday",
+	"Monday",
+	"Tuesday",
+	"Wednesday",
+	"Thursday",
+	"Friday",
+	"Saturday",
 }
 
-var monthFormat = map[string]string{
-	"Jan":       "一月",
-	"Feb":       "二月",
-	"Mar":       "三月",
-	"Apr":       "四月",
-	"May":       "五月",
-	"Jun":       "六月",
-	"Jul":       "七月",
-	"Aug":       "八月",
-	"Sep":       "九月",
-	"Oct":       "十月",
-	"Nov":       "十一月",
-	"Dec":       "十二月",
-	"January":   "一月",
-	"February":  "二月",
-	"March":     "三月",
-	"April":     "四月",
-	"June":      "六月",
-	"July":      "七月",
-	"August":    "八月",
-	"September": "九月",
-	"October":   "十月",
-	"November":  "十一月",
-	"December":  "十二月",
+var shortDayNames = [...]string{
+	"Sun",
+	"Mon",
+	"Tue",
+	"Wed",
+	"Thu",
+	"Fri",
+	"Sat",
 }
 
-var pmFormat = map[string]string{
-	"PM": "下午",
-	"AM": "上午",
-	"pm": "下午",
-	"am": "上午",
+var shortMonthNames = [...]string{
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
 }
+
+var longMonthNames = [...]string{
+	"January",
+	"February",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"August",
+	"September",
+	"October",
+	"November",
+	"December",
+}
+
+const (
+	Sunday = iota
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Saturday
+)
+
+var longDayMap = [...]string{
+	"星期日",
+	"星期一",
+	"星期二",
+	"星期三",
+	"星期四",
+	"星期五",
+	"星期六",
+}
+
+var shortDayMap = [...]string{
+	"周日",
+	"周一",
+	"周二",
+	"周三",
+	"周四",
+	"周五",
+	"周六",
+}
+
+const (
+	January = iota
+	February
+	March
+	April
+	May
+	June
+	July
+	August
+	September
+	October
+	November
+	December
+)
+
+var shortMonthMap = [...]string{
+	"一月",
+	"二月",
+	"三月",
+	"四月",
+	"五月",
+	"六月",
+	"七月",
+	"八月",
+	"九月",
+	"十月",
+	"十一月",
+	"十二月",
+}
+
+var longMonthMap = shortMonthMap
+
+const (
+	AM = iota
+	PM
+)
+
+var shortPMMap = [...]string{
+	"上午",
+	"下午",
+}
+
+var longPMMap = shortPMMap

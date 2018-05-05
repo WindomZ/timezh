@@ -3,30 +3,32 @@ package timezh
 import "bytes"
 
 type format struct {
-	layout     string
 	mixed      bool
-	day        uint64
-	dayPoint   uint64
-	month      uint64
-	monthPoint uint64
-	pm         uint64
-	pmPoint    uint64
-	buf        bytes.Buffer
+	day        uint8
+	dayPoint   uint8
+	month      uint8
+	monthPoint uint8
+	pm         uint8
+	pmPoint    uint8
+	buf        *bytes.Buffer
 }
 
 func (f *format) init(s string) {
-	f.layout = s
 	f.day = 0
 	f.dayPoint = 1
 	f.month = 0
 	f.monthPoint = 1
 	f.pm = 0
 	f.pmPoint = 1
-	f.buf.Reset()
+	f.reset()
 }
 
 func (f *format) reset() {
-	f.buf.Reset()
+	if f.buf == nil {
+		f.buf = new(bytes.Buffer)
+	} else {
+		f.buf.Reset()
+	}
 }
 
 // Format returns a textual representation of the time value formatted
@@ -67,21 +69,21 @@ func FormatLayout(layout string) string {
 
 func (t *Time) formatLayout(layout string) string {
 	t.f.init(layout)
-	j, l := 0, len(layout)
+	j := 0
 	for i, r := range layout {
 		if i < j {
 			continue
 		}
 		switch r {
 		case 'M':
-			if l >= i+6 && layout[i:i+6] == "Monday" {
+			if len(layout) >= i+6 && layout[i:i+6] == "Monday" {
 				j = i + 6
 				if t.f.mixed {
 					t.f.day <<= 1
 					t.f.dayPoint <<= 1
 				}
 				t.f.buf.WriteString("Monday")
-			} else if l >= i+3 && layout[i:i+3] == "Mon" {
+			} else if len(layout) >= i+3 && layout[i:i+3] == "Mon" {
 				j = i + 3
 				if t.f.mixed {
 					t.f.day <<= 1
@@ -90,14 +92,14 @@ func (t *Time) formatLayout(layout string) string {
 				t.f.buf.WriteString("Mon")
 			}
 		case 'J':
-			if l >= i+7 && layout[i:i+7] == "January" {
+			if len(layout) >= i+7 && layout[i:i+7] == "January" {
 				j = i + 7
 				if t.f.mixed {
 					t.f.month <<= 1
 					t.f.monthPoint <<= 1
 				}
 				t.f.buf.WriteString("January")
-			} else if l >= i+3 && layout[i:i+3] == "Jan" {
+			} else if len(layout) >= i+3 && layout[i:i+3] == "Jan" {
 				j = i + 3
 				if t.f.mixed {
 					t.f.month <<= 1
@@ -106,7 +108,7 @@ func (t *Time) formatLayout(layout string) string {
 				t.f.buf.WriteString("Jan")
 			}
 		case 'P', 'p':
-			if l >= i+2 {
+			if len(layout) >= i+2 {
 				if layout[i:i+2] == "PM" || layout[i:i+2] == "pm" {
 					j = i + 2
 					if t.f.mixed {
@@ -117,7 +119,7 @@ func (t *Time) formatLayout(layout string) string {
 				}
 			}
 		case '星':
-			if l >= i+9 && layout[i:i+9] == "星期一" {
+			if len(layout) >= i+9 && layout[i:i+9] == "星期一" {
 				j = i + 9
 				if t.f.mixed {
 					t.f.day = (t.f.day + 1) << 1
@@ -126,7 +128,7 @@ func (t *Time) formatLayout(layout string) string {
 				t.f.buf.WriteString("Monday")
 			}
 		case '周':
-			if l >= i+6 && layout[i:i+6] == "周一" {
+			if len(layout) >= i+6 && layout[i:i+6] == "周一" {
 				j = i + 6
 				if t.f.mixed {
 					t.f.day = (t.f.day + 1) << 1
@@ -135,7 +137,7 @@ func (t *Time) formatLayout(layout string) string {
 				t.f.buf.WriteString("Mon")
 			}
 		case '一':
-			if l >= i+6 && layout[i:i+6] == "一月" {
+			if len(layout) >= i+6 && layout[i:i+6] == "一月" {
 				j = i + 6
 				if t.f.mixed {
 					t.f.month = (t.f.month + 1) << 1
@@ -144,7 +146,7 @@ func (t *Time) formatLayout(layout string) string {
 				t.f.buf.WriteString("Jan")
 			}
 		case '下':
-			if l >= i+6 && layout[i:i+6] == "下午" {
+			if len(layout) >= i+6 && layout[i:i+6] == "下午" {
 				j = i + 6
 				if t.f.mixed {
 					t.f.pm = (t.f.pm + 1) << 1
