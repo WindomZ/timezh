@@ -50,3 +50,53 @@ func TestFormatLayout(t *testing.T) {
 	layout1 := "January, Jan, 2006-01-02, 02-Jan-06, Monday, Mon, 15:04:05PM -0700, 15:04:05Z07:00PM MST"
 	assert.Equal(t, layout1, FormatLayout(layout1))
 }
+
+func BenchmarkFormatLayout(b *testing.B) {
+	b.StopTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			FormatLayout("2006年01月02日(January, 一月) 下午3:04:05PM 星期一(Mon, 周一)")
+		}
+	})
+}
+
+func BenchmarkTime_Format1(b *testing.B) {
+	t := time.Now()
+	t.Format("2006年01月02日(January) 3:04:05PM Mon")
+	b.StopTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			t.Format("2006年01月02日(January) 3:04:05PM Mon")
+		}
+	})
+}
+
+func BenchmarkTime_Format2(b *testing.B) {
+	t := Now()
+	t.Format("2006年01月02日(一月) 3:04:05下午 星期一")
+	b.StopTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			t.Format("2006年01月02日(一月) 3:04:05下午 星期一")
+		}
+	})
+}
+
+func BenchmarkTime_FormatMix(b *testing.B) {
+	t := Now()
+	t.FormatMix("2006年01月02日(January, 一月) 下午3:04:05PM 星期一(Mon, 周一)")
+	b.StopTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			t.FormatMix("2006年01月02日(January, 一月) 下午3:04:05PM 星期一(Mon, 周一)")
+		}
+	})
+}
