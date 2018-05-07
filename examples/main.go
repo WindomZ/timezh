@@ -13,6 +13,7 @@ func main() {
 	fmt.Println("Time:", t.Format("2006-01-02 15:04:05"))
 
 	format(t)
+	parse(t)
 }
 
 func format(t time.Time) {
@@ -29,4 +30,12 @@ func format(t time.Time) {
 	fmt.Println("  - timezh.Format(特性):", timezh.T(t).Format("2006年01月02日(一月) 下午3:04:05 星期一(周一)"))
 	fmt.Println("  - timezh.Format(特性):", timezh.T(t).Format("2006年01月02日(January, 一月) 下午3:04:05PM 星期一(Mon, 周一)"))
 	fmt.Println("  - timezh.Format(特性):", timezh.T(t).FormatMix("2006年01月02日(January, 一月) 下午3:04:05PM 星期一(Mon, 周一)"))
+}
+
+func parse(t time.Time) {
+	tmp, _ := timezh.Parse("2006年01月02日(一月) 下午3:04:05 星期一(周一)",
+		timezh.T(t).Format("2006年01月02日(一月) 下午3:04:05 星期一(周一)"))
+
+	fmt.Println("===========Parse===========")
+	fmt.Println("Unix time对比：", t.UnixNano(), "==", tmp.UnixNano())
 }
