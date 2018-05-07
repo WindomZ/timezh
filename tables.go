@@ -50,6 +50,16 @@ var longMonthNames = [...]string{
 	"December",
 }
 
+//var shortPMNames = [...]string{
+//	"am",
+//	"pm",
+//}
+
+var longPMNames = [...]string{
+	"AM",
+	"PM",
+}
+
 // A Weekday specifies a day of the week (Sunday = 0, ...).
 const (
 	Sunday = iota
