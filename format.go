@@ -163,8 +163,8 @@ func (t *Time) formatLayout(layout string) string {
 	return t.f.buf.String()
 }
 
-// FormatChinese return a Chinese textual representation of the time value formatted
+// FormatValue return a Chinese textual representation of the time value formatted
 // according to layout.
-func FormatChinese(s string) string {
+func FormatValue(s string) string {
 	return new(Time).lookup(s)
 }

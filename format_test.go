@@ -100,9 +100,9 @@ func TestFormatLayout(t *testing.T) {
 	assert.Equal(t, layout1, FormatLayout(layout1))
 }
 
-func TestFormatChinese(t *testing.T) {
+func TestFormatValue(t *testing.T) {
 	assert.Equal(t, "一月, 一月, 02-一月-06, 星期一, 周一, 15:04:05下午",
-		FormatChinese("January, Jan, 02-Jan-06, Monday, Mon, 15:04:05PM"))
+		FormatValue("January, Jan, 02-Jan-06, Monday, Mon, 15:04:05PM"))
 }
 
 func BenchmarkFormatLayout(b *testing.B) {
@@ -116,7 +116,7 @@ func BenchmarkFormatLayout(b *testing.B) {
 	})
 }
 
-func BenchmarkFormatChinese(b *testing.B) {
+func BenchmarkFormatValue(b *testing.B) {
 	b.StopTimer()
 	b.ReportAllocs()
 	b.StartTimer()

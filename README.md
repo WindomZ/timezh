@@ -19,7 +19,7 @@ go get github.com/WindomZ/timezh
   - [x] Format(string) string
   - [x] FormatMix(string) string
   - [x] FormatLayout(string) string
-  - [x] FormatChinese(string) string
+  - [x] FormatValue(string) string
 - [x] Parse
   - [x] Parse(string, string) (Time, error)
   - [x] ParseLayout(string) string
@@ -77,9 +77,18 @@ timezh.Now().FormatMix("2006年01月02日(January, 一月) 下午3:04:05PM 星�
 ```go
 import "github.com/WindomZ/timezh"
 
-timezh.FormatChinese("2009年01月03日(January) 6:15:05PM 星期六(Sat)")
+timezh.FormatValue("2009年01月03日(January) 6:15:05PM 星期六(Sat)")
 
 >>> 2009年01月03日(一月) 6:15:05下午 星期六(周六)
+```
+
+文本中文解析：
+```go
+import "github.com/WindomZ/timezh"
+
+timezh.ParseValue("2009年01月03日(一月) 6:15:05下午 星期六(周六)")
+
+>>> 2009年01月03日(Jan) 6:15:05PM Saturday(Sat)
 ```
 
 ## Benchmark
