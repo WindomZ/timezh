@@ -47,3 +47,50 @@ func TestParse(t *testing.T) {
 		assert.Equal(t, testTime.UnixNano(), result.UnixNano())
 	}
 }
+
+func BenchmarkParse1(b *testing.B) {
+	b.StopTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			time.Parse("2006年01月02日(January) PM3:04:05 Monday(Mon)",
+				"2009年01月03日(Jan) PM6:15:05 Saturday(Sat)")
+		}
+	})
+}
+
+func BenchmarkParse2(b *testing.B) {
+	b.StopTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			Parse("2006年01月02日(January) PM3:04:05 Monday(Mon)",
+				"2009年01月03日(一月) 下午6:15:05 星期六(周六)")
+		}
+	})
+}
+
+func BenchmarkParse3(b *testing.B) {
+	b.StopTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			time.Parse("2006年01月02日(January) PM3:04:05 Monday(Mon)",
+				ParseValue("2009年01月03日(Jan) PM6:15:05 Saturday(Sat)"))
+		}
+	})
+}
+
+func BenchmarkParseValue(b *testing.B) {
+	b.StopTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			ParseValue("2009年01月03日(一月) 6:15:05下午 星期六(周六)")
+		}
+	})
+}
